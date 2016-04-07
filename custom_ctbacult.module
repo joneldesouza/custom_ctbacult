@@ -20,13 +20,8 @@ function custom_ctbacult_block_view($delta='') {
   switch ($delta) {
     case 'where_to_go':
       $block['subject'] = t('You do not know where to go today?');
-      $block['content'] = drupal_get_form('where_to_go');
+      $block['content'] = views_embed_view('estabelecimentos','block_1');
     break;
   }
   return $block;
-}
-
-function where_to_go() {
-  $output = views_embed_view('estabelecimentos','block_1');
-  return $output;
 }
