@@ -25,3 +25,122 @@ function custom_ctbacult_block_view($delta='') {
   }
   return $block;
 }
+
+/**
+ * Implements hook_token_info().
+ */
+function custom_ctbacult_token_info() {
+  $info = array();
+  $info['types']['ctbacult'] = array(
+    'name' => t('CuritibaCultura'),
+    'description' => t('A token type for CuritibaCultura tokens.'),
+  );
+  $info['tokens']['ctbacult']['video_image'] = array(
+    'name' => t('Video image'),
+    'description' => t('Video image'),
+  );
+  $info['tokens']['ctbacult']['video_url'] = array(
+    'name' => t('Video url'),
+    'description' => t('Video url'),
+  );
+  $info['tokens']['ctbacult']['images'] = array(
+    'name' => t('Images: 0'),
+    'description' => t('Image position 0'),
+  );
+  $info['tokens']['ctbacult']['images_1'] = array(
+    'name' => t('Images: 1'),
+    'description' => t('Image position 1'),
+  );
+  $info['tokens']['ctbacult']['images_2'] = array(
+    'name' => t('Images: 2'),
+    'description' => t('Image position 2'),
+  );
+  $info['tokens']['ctbacult']['images_3'] = array(
+    'name' => t('Images: 3'),
+    'description' => t('Image position 3'),
+  );
+  $info['tokens']['ctbacult']['images_4'] = array(
+    'name' => t('Images: 4'),
+    'description' => t('Image position 4'),
+  );
+  return $info;
+}
+
+function custom_ctbacult_tokens($type, $tokens, array $data = array(), array $options = array()) {
+  $replacements = array();
+
+  if ($type == 'ctbacult') {
+    // Loop through the available tokens.
+    foreach ($tokens as $name => $original) {
+      // Find our custom tokens by name.
+      switch ($name) {
+        case 'video_image':
+          if ($data['node']->field_video == true) {
+            $file_id = strip_tags($data['node']->field_video['und'][0]['fid']);
+            $file_path = file_load($file_id)->uri;
+            $string = file_create_url($file_path);
+            if (strstr($string, "youtube")) {
+              $image_video = str_replace("http://www.youtube.com/watch?v=", "", $string);
+              $value = 'http://www.curitibacultura.com.br/sites/default/files/media-youtube/'. $image_video .'.jpg';
+            } elseif (strstr($string, "vimeo")) {
+              $image_video = str_replace("http://vimeo.com/", "", $string);
+              $value = 'http://www.curitibacultura.com.br/sites/default/files/media-vimeo/'. $image_video .'.jpg';
+            }
+          }
+        $replacements[$original] = $value;
+        break;
+
+        case 'video_url':
+          if ($data['node']->field_video == true) {
+            $file_id = strip_tags($data['node']->field_video['und'][0]['fid']);
+            $file_path = file_load($file_id)->uri;
+            // print file_create_url($file_path);
+            $string = file_create_url($file_path);
+          
+            if (strstr($string, "youtube")) {
+              $youtube = str_replace("http", "https", $string);
+              $value = str_replace("watch?v=", "embed/", $youtube);
+            } elseif (strstr($string, "vimeo")) {
+              $value = str_replace("http://vimeo.com/", "https://player.vimeo.com/video/", $string);
+            }
+          }          
+        $replacements[$original] = $value;
+        break;
+        
+        case 'images':
+          if ($data['node']->field_images == true) {
+            $value = image_style_url('facebook_600x316', $data['node']->field_images['und'][0]['uri']);
+          }          
+        $replacements[$original] = $value;
+        break;
+        case 'images_1':
+          if ($data['node']->field_images == true) {
+            $value = image_style_url('facebook_600x316', $data['node']->field_images['und'][1]['uri']);
+          }          
+        $replacements[$original] = $value;
+        break;
+        case 'images_2':
+          if ($data['node']->field_images == true) {
+            $value = image_style_url('facebook_600x316', $data['node']->field_images['und'][2]['uri']);
+          }          
+        $replacements[$original] = $value;
+        break;
+        case 'images_3':
+          if ($data['node']->field_images == true) {
+            $value = image_style_url('facebook_600x316', $data['node']->field_images['und'][3]['uri']);
+          }          
+        $replacements[$original] = $value;
+        break;
+        case 'images_4':
+          if ($data['node']->field_images == true) {
+            $value = image_style_url('facebook_600x316', $data['node']->field_images['und'][4]['uri']);
+          }          
+        $replacements[$original] = $value;
+        break;
+        
+      }
+    }
+  }
+
+  return $replacements;
+}

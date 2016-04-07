@@ -1,4 +1,4 @@
-name = Custom CuritibaCultura
-description = Custom module for CuritibaCultura.
+name = CuritibaCultura
+description = Module for CuritibaCultura.
 core = 7.x
 version = 7.x-1.0
