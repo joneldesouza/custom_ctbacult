@@ -1,0 +1,32 @@
+<?php
+/**
+ * @file
+ * The functions for the Custom blocks module.
+ */
+
+/**
+ * Implements hook_block_info().
+ */
+function custom_ctbacult_block_info() {
+  $blocks = array();
+  $blocks['where_to_go'] = array(
+    'info' => t('You do not know where to go today?'),
+  ); 
+  return $blocks;
+}
+
+function custom_ctbacult_block_view($delta='') {
+  $block = array(); 
+  switch ($delta) {
+    case 'where_to_go':
+      $block['subject'] = t('You do not know where to go today?');
+      $block['content'] = drupal_get_form('where_to_go');
+    break;
+  }
+  return $block;
+}
+
+function where_to_go() {
+  $output = views_embed_view('estabelecimentos','block_1');
+  return $output;
+}
