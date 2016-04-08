@@ -144,3 +144,18 @@ function custom_ctbacult_tokens($type, $tokens, array $data = array(), array $op
 
   return $replacements;
 }
+
+function custom_ctbacult_entity_info_alter(&$entity_info) {
+  $entity_info['file']['view modes']['thumb_video'] = array(
+    'label' => t('Thumbnail video'),
+    'custom settings' => TRUE,
+  );
+  $entity_info['file']['view modes']['player_video'] = array(
+    'label' => t('Player video node'),
+    'custom settings' => TRUE,
+  );
+  $entity_info['file']['view modes']['player_video_block'] = array(
+    'label' => t('Player video block'),
+    'custom settings' => TRUE,
+  );
+}
