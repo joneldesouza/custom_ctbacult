@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * The functions for the Custom blocks module.
+ * The functions for the Custom CuritibaCultura module.
  */
 
 /**
@@ -14,7 +14,9 @@ function custom_ctbacult_block_info() {
   ); 
   return $blocks;
 }
-
+/**
+ * Implements hook_block_view().
+ */
 function custom_ctbacult_block_view($delta='') {
   $block = array(); 
   switch ($delta) {
@@ -70,9 +72,8 @@ function custom_ctbacult_tokens($type, $tokens, array $data = array(), array $op
   $replacements = array();
 
   if ($type == 'ctbacult') {
-    // Loop through the available tokens.
     foreach ($tokens as $name => $original) {
-      // Find our custom tokens by name.
+
       switch ($name) {
         case 'video_image':
           if ($data['node']->field_video == true) {
@@ -113,24 +114,28 @@ function custom_ctbacult_tokens($type, $tokens, array $data = array(), array $op
           }          
         $replacements[$original] = $value;
         break;
+        
         case 'images_1':
           if ($data['node']->field_images == true) {
             $value = image_style_url('facebook_600x316', $data['node']->field_images['und'][1]['uri']);
           }          
         $replacements[$original] = $value;
         break;
+        
         case 'images_2':
           if ($data['node']->field_images == true) {
             $value = image_style_url('facebook_600x316', $data['node']->field_images['und'][2]['uri']);
           }          
         $replacements[$original] = $value;
         break;
+        
         case 'images_3':
           if ($data['node']->field_images == true) {
             $value = image_style_url('facebook_600x316', $data['node']->field_images['und'][3]['uri']);
           }          
         $replacements[$original] = $value;
         break;
+        
         case 'images_4':
           if ($data['node']->field_images == true) {
             $value = image_style_url('facebook_600x316', $data['node']->field_images['und'][4]['uri']);
@@ -144,6 +149,10 @@ function custom_ctbacult_tokens($type, $tokens, array $data = array(), array $op
 
   return $replacements;
 }
+
+/*
+ * Implements custom view mode hook_entity_info_alter().
+ */
 
 function custom_ctbacult_entity_info_alter(&$entity_info) {
   $entity_info['file']['view modes']['thumb_video'] = array(
