@@ -11,14 +11,14 @@ function custom_ctbacult_block_info() {
   $blocks = array();
   $blocks['where_to_go'] = array(
     'info' => t('You do not know where to go today?'),
-  ); 
+  );
   return $blocks;
 }
 /**
  * Implements hook_block_view().
  */
 function custom_ctbacult_block_view($delta='') {
-  $block = array(); 
+  $block = array();
   switch ($delta) {
     case 'where_to_go':
       $block['subject'] = t('You do not know where to go today?');
@@ -97,52 +97,52 @@ function custom_ctbacult_tokens($type, $tokens, array $data = array(), array $op
             $file_path = file_load($file_id)->uri;
             // print file_create_url($file_path);
             $string = file_create_url($file_path);
-          
+
             if (strstr($string, "youtube")) {
               $youtube = str_replace("http", "https", $string);
               $value = str_replace("watch?v=", "embed/", $youtube);
             } elseif (strstr($string, "vimeo")) {
               $value = str_replace("http://vimeo.com/", "https://player.vimeo.com/video/", $string);
             }
-          }          
+          }
         $replacements[$original] = $value;
         break;
-        
+
         case 'images':
           if ($data['node']->field_images == true) {
             $value = image_style_url('facebook_600x316', $data['node']->field_images['und'][0]['uri']);
-          }          
+          }
         $replacements[$original] = $value;
         break;
-        
+
         case 'images_1':
           if ($data['node']->field_images == true) {
             $value = image_style_url('facebook_600x316', $data['node']->field_images['und'][1]['uri']);
-          }          
+          }
         $replacements[$original] = $value;
         break;
-        
+
         case 'images_2':
           if ($data['node']->field_images == true) {
             $value = image_style_url('facebook_600x316', $data['node']->field_images['und'][2]['uri']);
-          }          
+          }
         $replacements[$original] = $value;
         break;
-        
+
         case 'images_3':
           if ($data['node']->field_images == true) {
             $value = image_style_url('facebook_600x316', $data['node']->field_images['und'][3]['uri']);
-          }          
+          }
         $replacements[$original] = $value;
         break;
-        
+
         case 'images_4':
           if ($data['node']->field_images == true) {
             $value = image_style_url('facebook_600x316', $data['node']->field_images['und'][4]['uri']);
-          }          
+          }
         $replacements[$original] = $value;
         break;
-        
+
       }
     }
   }
@@ -167,4 +167,10 @@ function custom_ctbacult_entity_info_alter(&$entity_info) {
     'label' => t('Player video block'),
     'custom settings' => TRUE,
   );
+}
+
+function custom_ctbacult_form_alter(&$form, $form_state, $form_id) {
+  if ($form_id == 'user_login_block' || $form_id == 'user_login') {
+    honeypot_add_form_protection($form, $form_state, array('honeypot', 'time_restriction'));
+  }
 }
